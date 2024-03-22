@@ -55,41 +55,60 @@ def process_recipies():
         "app_key": APP_KEY,
     }
 
-    response_a = requests.get(API_ENDPOINT, params=params)
+    response_pre = requests.get(API_ENDPOINT, params=params)
+    response = response_pre.json()["hits"]
+    return render_template("recipes.html", recipes=response)
+    # x = []
+    # b = 0
 
-    if response_a.status_code == 200:
-        prompt = ""
-        x = response_a.json()["hits"]
-        for j in range(min(6, len(x))):
-            item = x[j]
-            recipe = item["recipe"]
-            digest = recipe["digest"]
-            recipe_entry = ""
-            for nutrient in digest:
-                label = nutrient["tag"]
-                total = int(nutrient["total"])
-                unit = nutrient["unit"]
-                recipe_entry += f"{label}{total}{unit}, "
-            prompt += f"\n{j + 1}: {recipe_entry}\n"
-
-        prompt += f"""1-{len(x)} are nutrient profiles for recipes for: Charachter: {age}yrs {gender} {weight}kg {height}ft Disease: {disease}\n If none of them fit the profile, return a recipe that is well-suited using: {q}\n"""
-        prompt += f"""OUTPUT = list([3 indices of recipes]) or if none, suggested recipie"""
-
-        genai.configure(api_key=GEN_API_KEY)
-        model = genai.GenerativeModel('gemini-pro')
-        response = model.generate_content(prompt)
+    # for k in range(6):
+    #     j = response.index(b)
+    #     b += 1
+    #     i = j["recipe"]
+    #     genai.configure(api_key=GEN_API_KEY)
+    #     model = genai.GenerativeModel('gemini-pro')
+    #     prompt = ""
+    #     digest = i["digest"]
+    #     recipe_entry = ""
+    #     for nutrient in digest:
+    #         label = nutrient["tag"]
+    #         total = int(nutrient["total"])
+    #         unit = nutrient["unit"]
+    #         recipe_entry += f"{label}{total}{unit}, "
+    #     prompt += f"\n{recipe_entry}\n"
         
-        rt = response.text
+    #     response = model.generate_content(f"You are a nutritionist, given a recipie and a health profile for a individual please tell if the recipe is fit for the person or not. Strictly answer in 'yes' or 'no'\n User details: {age}yrs {height}ft {gender} {weight}kg diseases: {disease}\nRecipe Profile: {prompt}")
+    #     rt = response.text
 
-        if len(rt) == 9:
-            lo = ast.literal_eval(rt)
-            print(lo)
-            print(response_a[lo[0]])
-            return render_template("recipes.html", one=response_a[lo[0]], two=response_a[lo[1]], three=response_a[lo[2]])
-        else:
-            return render_template("recipe.html", content=rt)
-    else:
-        return jsonify({"error": "Failed to fetch recipes", "status_code": response.status_code}), 500
+    #     if rt == "yes":
+    #         x.append(j["recipie"])
+    #         print(x)
+
+         
+
+
+
+
+    #     prompt += f"""given above are are nutrient profiles for recipes for: Charachter: {age}yrs {gender} {weight}kg {height}ft Disease: {disease}\n Return only one number as the index of a well suited recipe \n"""
+    #     print(prompt)
+
+    #     genai.configure(api_key=GEN_API_KEY)
+    #     model = genai.GenerativeModel('gemini-pro')
+    #     response = model.generate_content(prompt)
+    #     print(response)
+    #     rt = response.text
+    #     print(f"{rt}")
+
+    #     # print(f"->>>> {rt}")
+    #     if len(rt) == 9:
+    #         lo = ast.literal_eval(rt)
+    #         print(lo)
+    #         print(response_a[lo[0]])
+    #         return render_template("recipes.html", one=response_a[lo[0]], two=response_a[lo[1]], three=response_a[lo[2]])
+    #     else:
+    #         return render_template("recipe.html", content=rt)
+    # else:
+    #     return jsonify({"error": "Failed to fetch recipes", "status_code": response.status_code}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)

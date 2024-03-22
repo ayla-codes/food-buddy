@@ -4,12 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-lagB4oNj8GgT6KeXL6z5qvZGQRtIkPnld2bcCEZf5Sx6mnG/MqK5t2XvqcxVqW2c" crossorigin="anonymous">
+    <style>
+        .recipe-card {
+            max-width: 400px;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .recipe-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .recipe-card .card-body {
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-    {{ one }}
-    <hr>
-    {{ two }}
-    <hr>
-    {{ three }}
+    {% for recipe in recipes %}
+    <div class="recipe-card">
+        <img src="{{ recipe['recipe']['image'] }}" class="card-img-top" alt="{{ recipe['recipe']['label'] }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ recipe['recipe']['label'] }}</h5>
+            <ul class="list-group">
+                {% for ingredient in recipe['recipe']['ingredientLines'] %}
+                <li class="list-group-item">{{ ingredient }}</li>
+                {% endfor %}
+            </ul>
+            <a href="{{ recipe['recipe']['url'] }}" class="btn btn-primary mt-3" target="_blank">View Recipe</a>
+        </div>
+    </div>
+    {% endfor %}
 </body>
 </html>
