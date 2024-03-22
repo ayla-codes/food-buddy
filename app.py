@@ -28,9 +28,6 @@ def search_recipes():
         "type": "any",
         "app_id": APP_ID,
         "app_key": APP_KEY,
-        # "ingr": request.args.get("ingr"),
-        # "diet": request.args.getlist("diet"),
-        # "health": request.args.getlist("health"),
     }
 
     response = requests.get(API_ENDPOINT, params=params)
