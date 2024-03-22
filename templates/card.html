@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% for cover in range(1,3) %}
+{% for cover in range(1,8) %}
 <div class="flex justify-around container mx-auto">
-        {% set cover = cover + 2 %}
+
 {% for number in range(1,4) %}
-        {% with src=data.photos[cover + number], name='Curry', title=data.results[0].gender %} 
+        {% with src=data.photos[(cover*3) + number], name=data.imgName[(cover*3) + number], title=data.results[0].gender %} 
         {% include 'an.html' %}
         {% endwith %}
 {% endfor %}

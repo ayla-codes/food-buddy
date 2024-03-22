@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{url_for('static',filename='css/output.css')}}" rel="stylesheet">
+    <title>{% block title %} {% endblock %}</title>
+    <style>
+        .active{
+            border-bottom: 2px white solid;
+        }
+        .sel{
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="w-full bg-blue-500 py-4">
+        <div class="container flex items-center justify-between mx-auto">
+        <h1 class="text-2xl ml-10 text-white">Food Finder</h1>
+        <form action="." method="get">
+            <input class="w-96 rounded-lg pl-2 py-2" type="text" name="search" placeholder="search"/>
+        </form>
+        <nav>
+            <ul class="flex gap-8 mr-10 text-white text-blod">
+                <li id="foo" class="sel active"><a>Home</a></li>
+                <li class="sel"><a>Find Food</a></li>
+                <li class="sel"><a>Recommendation</a></li>
+            </ul>
+        </nav>
+        </div>
+    </div>
+
+    {% block content %}
+    
+         
+    {% endblock %}
+
+    <script> 
+        const menuItems = document.querySelectorAll('.sel');
+        menuItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            // Remove "active" class from all menu items
+            menuItems.forEach(function(item) {
+            item.classList.remove('active');
+            });
+
+            // Add "active" class to the clicked menu item
+            this.classList.add('active');
+        });
+        });
+
+    </script>
+</body>
+</html>

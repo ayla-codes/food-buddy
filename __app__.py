@@ -18,6 +18,7 @@ def card():
     data = {
         "results": info.json()["results"],
         "photos": imgData,
+        "imgName": imgName,
     }
     # print(data["photos"])
     return render_template("card.html", data = data)
