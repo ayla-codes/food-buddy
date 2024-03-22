@@ -89,7 +89,34 @@ def search_recipes():
     response = requests.get(API_ENDPOINT, params=params, headers=headers)
 
     if response.status_code == 200:
-        return jsonify(response.json())
+        age = 18
+        sex = "Male"
+        weight = "70"
+        height = "6'2"
+        disease = "Iron Defficency, Anemia"
+
+        prompt = f""" """
+
+        x = response.json()["hits"]
+        i = 1
+        for j in range(6):
+            item = x[j]
+            recipe = item["recipe"]
+            digest = recipe["digest"]
+            recipe_entry = ""
+            for nutrient in digest:
+                label = nutrient["tag"]
+                total = int(nutrient["total"])
+                unit = nutrient["unit"]
+                recipe_entry += f"{label}{total}{unit}, "
+            prompt += f"\n{i}: {recipe_entry}\n"
+            i += 1
+
+        prompt += f"""1-6 are nutrient profiles for recipes for: Charachter: {age}yrs {sex} {weight}kg {height}ft Disease: {disease}\n If none of them fit the profile, return a recipie that is well-suited using: {query}"""
+
+        print(prompt)
+        print(len(prompt))
+        return jsonify({"prompt": prompt})
     else:
         return jsonify({"error": "Failed to fetch recipes", "status_code": response.status_code}), 500
 
