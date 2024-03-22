@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, session, jsonify
 import requests
+from database import *
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -7,6 +8,19 @@ app.secret_key = 'your_secret_key'
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/card', methods=['GET', "POST"])
+def card():
+    if request.method == 'POST':
+        print(request.form[""])   
+    info = requests.get("https://randomuser.me/api/")
+    data = {
+        "results": info.json()["results"],
+        "photos": imgData,
+    }
+    # print(data["photos"])
+    return render_template("card.html", data = data)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
